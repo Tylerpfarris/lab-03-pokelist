@@ -36,3 +36,21 @@
     transform: rotate(360deg);
   }
 }
+
+ul {
+  list-style-type: none;
+}
+.selected {
+    display: none;
+}
+
+.mainDiv {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+
+.pokeList {
+  height: 150px;
+  width: auto;
+}
