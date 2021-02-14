@@ -1,0 +1,21 @@
+
+
+.peramsDiv {
+margin-top: 200px;
+margin-left: 1rem;
+margin-bottom: 1rem;
+
+}
+
+.form {
+    margin: 1rem;
+}
+.radioDiv {
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-right: 2rem;
+}

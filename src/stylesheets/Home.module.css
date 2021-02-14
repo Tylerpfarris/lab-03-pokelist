@@ -1,0 +1,104 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&family=Six+Caps&display=swap');
+
+
+.container {
+    display: flex;
+    height: 100%;
+    width: 100vw;
+    overflow: hidden;
+    overflow-y: hidden;
+    background-image: url("../img/blackBrick.jpeg");
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: 'Six Caps', sans-serif;
+    font-size: 45em;
+    position: fixed;
+    flex-wrap: wrap;
+    overflow: hidden;
+    
+   
+}
+
+.pokeDiv {
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+
+
+  
+    
+   overflow-y: hidden;
+}
+
+.monDiv {
+    margin-top: -225px;
+    overflow-y: hidden;
+    
+    float: right;
+   
+}
+
+.pSpan:hover {
+    color: rgba(255, 255, 255, 0.3);
+    transform: scale(2);
+} 
+
+.oSpan:hover {
+   color: rgba(255, 255, 255, 0.4);
+  
+} 
+.kSpan:hover {
+    color: rgba(255, 255, 255, 0.5);;
+  
+} 
+.eSpan:hover {
+    color: rgba(255, 255, 255, 0.6);
+  
+} 
+.mSpan:hover {
+    color: rgba(255, 255, 255, 0.7);
+  
+} 
+.oSpan:hover {
+    color: rgba(255, 255, 255, 0.8);
+  
+} 
+.nSpan:hover {
+    color: rgba(255, 255, 255, 0.9);
+
+} 
+
+
+.pSpan {
+    transition: all 0.7s ease-in-out;
+   
+}
+
+
+.oSpan {
+    transition: all 0.7s ease-in-out;
+    
+}
+
+.kSpan {
+    transition: all 0.7s ease-in-out;
+}
+
+.eSpan {
+    transition: all 0.7s ease-in-out;
+}
+
+.mSpan {
+    transition: all 0.7s ease-in-out;
+}
+
+.oSpan {
+    transition: all 0.7s ease-in-out;
+}
+
+.nSpan {
+    transition: all 0.7s ease-in-out;
+}
