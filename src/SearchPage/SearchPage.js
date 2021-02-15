@@ -58,7 +58,7 @@ export default class SearchPage extends Component {
                     onChange={this.handleRadioChange}
                     />
                     
-                </section>
+                    </section>
                 <PokeList pokeArray = {filteredByType && searchedPokemon} />
             </div>
             
