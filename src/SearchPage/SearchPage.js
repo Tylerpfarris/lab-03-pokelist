@@ -27,6 +27,10 @@ export default class SearchPage extends Component {
     handleSortOrder = (e) => {this.setState({sortOrder: e.target.value})}
     
     render() {
+
+
+        console.log(this.state)
+
         const sortByType = typeof this.state.pokemon[0][this.state.sortBy];
        
         if(this.state.sortOrder === 'ascend') {
@@ -43,7 +47,9 @@ export default class SearchPage extends Component {
         }
         
        
-        const filteredByType = this.state.pokemon.filter(pokedata => pokedata.type_1 === (this.state.radio));
+        const filteredByType = this.state.radio
+            ? this.state.pokemon.filter(pokemonObj => pokemonObj.type_1 === (this.state.radio))
+            : this.state.pokemon;
         
         const searchedPokemon = filteredByType.filter(pokemonObj => pokemonObj.pokemon.includes(this.state.search));
         
@@ -55,11 +61,12 @@ export default class SearchPage extends Component {
                     <Perams handleSortBy = {this.handleSortBy} handleSortOrder = {this.handleSortOrder}/>
                     <SearchBar handleSearch = {this.handleSearch} sortBy = {this.state.sortBy}/>
                     <SearchCategory handleRadioChange = {this.handleRadioChange} pokemon = {uniqueType}
-                    onChange={this.handleRadioChange}
+                        onChange={this.handleRadioChange}
+                        
                     />
                     
-                    </section>
-                <PokeList pokeArray = {filteredByType && searchedPokemon} />
+                </section>
+                <PokeList pokeArray = {searchedPokemon} />
             </div>
             
         )

@@ -8,10 +8,10 @@ import style from '../stylesheets/Perams.module.css';
 
 export default class SearchCategory extends Component {
     render() {
-
+    
         const wut = this.props.pokemon;
-           
-        
+        console.log(typeof wut)
+        console.log(this.props)
         return (
             <div className={style.radioDiv}>
                     {this.props.pokemon.map(pokemonObj => 
@@ -24,8 +24,9 @@ export default class SearchCategory extends Component {
                         
                         />
                         {pokemonObj}
-                    </label>)}
-                        <label className="radioLabels" key={wut}><input className="radioButtons" type="radio" onChange={this.props.onChange} multiple={true} value={"normal" && "fire" && 'water' && "bug" && "grass"} key={wut} name="typeChoice"></input>All</label>
+                        </label>)}
+                        
+                <label className="radioLabels" key={wut}><input className="radioButtons" type="radio" onChange={this.props.onChange} value={''} key={wut} name="typeChoice"></input>All</label>
                     
 
             </div>
