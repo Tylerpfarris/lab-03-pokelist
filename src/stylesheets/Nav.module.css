@@ -1,0 +1,16 @@
+.navBar {
+    font-size: 100px;
+    margin: 0;
+    margin-right: 100px;
+    float: right;
+}
+
+.linkItem {
+ color: white;
+ text-decoration: none;
+ 
+}
+ul {
+  list-style-type: none;
+  margin: none;
+}

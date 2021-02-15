@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import SearchCategory from './SearchCategory';
 import pokedata from '../pokedata.js';
 import PokeList from './PokeList.js';
 import SearchBar from './SearchBar.js';
 import Perams from './Perams.js';
+import {uniqueType} from './UniqueArrayUtil';
+import style from '../stylesheets/Sidebar.module.css';
+
 
 export default class SearchPage extends Component {
 
@@ -10,28 +14,17 @@ export default class SearchPage extends Component {
         pokemon: pokedata,
         sortBy: 'pokemon',
         search: '',
-        sortOrder: 'ascend'
+        sortOrder: 'ascend',
+        radio: ''
     }
- 
-    handleSearch = (e) => {
-        e.preventDefault();
-        this.setState({
-            search: e.target[0].value
-        })
+    
+    handleRadioChange = (e) => {this.setState({radio: e.target.value})} 
 
-    }
+    handleSearch = (e) => {e.preventDefault(); this.setState({search: e.target[0].value})}
   
-    handleSortBy = (e) => {
-        this.setState({
-            sortBy: e.target.value
-        })
-    }
+    handleSortBy = (e) => {this.setState({sortBy: e.target.value})}
    
-    handleSortOrder = (e) => {
-        this.setState({
-            sortOrder: e.target.value
-        })
-    }
+    handleSortOrder = (e) => {this.setState({sortOrder: e.target.value})}
     
     render() {
         const sortByType = typeof this.state.pokemon[0][this.state.sortBy];
@@ -48,18 +41,25 @@ export default class SearchPage extends Component {
             if(sortByType === 'number') 
             this.state.pokemon.sort((a, b) => b[this.state.sortBy] - a[this.state.sortBy]);
         }
-
-        const searchedPokemon = this.state.pokemon.filter(pokemonObj => pokemonObj.pokemon.includes(this.state.search));
-        console.log(this.state);
-
+        
        
+        const filteredByType = this.state.pokemon.filter(pokedata => pokedata.type_1 === (this.state.radio));
+        
+        const searchedPokemon = filteredByType.filter(pokemonObj => pokemonObj.pokemon.includes(this.state.search));
+        
+       
+             
         return (
             <div className = "mainDiv">
-                <section className = "sidebar">
+                <section className ={style.sideBar}>
                     <Perams handleSortBy = {this.handleSortBy} handleSortOrder = {this.handleSortOrder}/>
                     <SearchBar handleSearch = {this.handleSearch} sortBy = {this.state.sortBy}/>
-                </section>
-                <PokeList pokeArray = {searchedPokemon} />
+                    <SearchCategory handleRadioChange = {this.handleRadioChange} pokemon = {uniqueType}
+                    onChange={this.handleRadioChange}
+                    />
+                    
+                    </section>
+                <PokeList pokeArray = {filteredByType && searchedPokemon} />
             </div>
             
         )
