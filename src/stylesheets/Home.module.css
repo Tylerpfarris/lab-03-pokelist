@@ -19,14 +19,13 @@
     flex-wrap: wrap;
     overflow: hidden;
     
-   
 }
 
 .pokeDiv {
     margin: auto;
     justify-content: center;
     align-items: center;
-
+    color: rgba(0, 0, 0, 0.8);
 
   
     
