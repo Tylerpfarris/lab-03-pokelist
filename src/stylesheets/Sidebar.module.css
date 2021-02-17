@@ -1,8 +1,14 @@
 
 .sideBar {
-    position: fixed;
-    margin-left: 2rem;
+    position: fixed ;
+    display: grid;
+    height: 100vh;
+    padding-left: 1rem;
+    padding-right: 1rem;
     font-family: 'Six Caps';
     font-size: 30px;
     letter-spacing: 4px;
+    background-color:#E5E5E5;
+    border-right: 1px solid black;
+   
 }

@@ -10,23 +10,22 @@ export default class SearchCategory extends Component {
     render() {
     
         const wut = this.props.pokemon;
-        console.log(typeof wut)
-        console.log(this.props)
+       
         return (
             <div className={style.radioDiv}>
                     {this.props.pokemon.map(pokemonObj => 
-                    <label className="radioLabels" key={pokemonObj}>
-                        <input className="radioButtons" type="radio"
+                    <label className={style.radioLabels} key={pokemonObj}>
+                        <input className={style.radioButtons} type="radio"
                         onChange={this.props.onChange}
                         value={pokemonObj}
                         name="typeChoice"
                         key={pokemonObj}
-                        
+                        checked={this.props.handleRadioChange === this.props.pokemon}
                         />
                         {pokemonObj}
                         </label>)}
                         
-                <label className="radioLabels" key={wut}><input className="radioButtons" type="radio" onChange={this.props.onChange} value={''} key={wut} name="typeChoice"></input>All</label>
+                <label className="radioLabels" key={wut}><input className={style.radioButtons} type="radio" onChange={this.props.onChange} value={''} key={wut} name="typeChoice" checked={''}    ></input>All</label>
                     
 
             </div>

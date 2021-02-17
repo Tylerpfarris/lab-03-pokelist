@@ -1,0 +1,17 @@
+.spinner::before {
+    margin-top: 500px;
+    top: -100%;
+    left: 50%;
+    animation: 1.5s linear infinite spinner;
+    animation-play-state: inherit;
+    border: solid 5px #cfd0d1;
+    border-bottom-color: #191b1d;
+    border-radius: 50%;
+    content: "";
+    height: 40px;
+    position: absolute;
+    
+    transform: translate3d(-50%, -50%, 0);
+    width: 40px;
+    will-change: transform;
+}

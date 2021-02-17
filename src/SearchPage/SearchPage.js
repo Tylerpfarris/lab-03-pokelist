@@ -1,72 +1,113 @@
 import React, { Component } from 'react';
+import request from 'superagent'
+
+
 import SearchCategory from './SearchCategory';
-import pokedata from '../pokedata.js';
+
 import PokeList from './PokeList.js';
 import SearchBar from './SearchBar.js';
 import Perams from './Perams.js';
-import {uniqueType} from './UniqueArrayUtil';
+import Spinner from './Spinner.js';
 import style from '../stylesheets/Sidebar.module.css';
+
 
 
 export default class SearchPage extends Component {
 
     state = {
-        pokemon: pokedata,
+        pokemon: [],
         sortBy: 'pokemon',
         search: '',
-        sortOrder: 'ascend',
-        radio: ''
+        sortOrder: 'asc',
+        radio: '',
+        loading: false,
+        dataTypes: [],
     }
     
-    handleRadioChange = (e) => {this.setState({radio: e.target.value})} 
+    componentDidMount = async () => {
+        console.log(this.state.search)
+        await this.fetchPokemon();
+        await this.fetchPokemonType();
+    }
 
-    handleSearch = (e) => {e.preventDefault(); this.setState({search: e.target[0].value})}
-  
-    handleSortBy = (e) => {this.setState({sortBy: e.target.value})}
    
-    handleSortOrder = (e) => {this.setState({sortOrder: e.target.value})}
+    fetchPokemon = async () => {
+      
+        this.setState({ loading: true });
+        
+        const data = await request.get(`https://pokedex-alchemy.herokuapp.com/api/pokedex?sort=${this.state.sortBy}&direction=${this.state.sortOrder}&pokemon=${this.state.search}&type_1=${this.state.radio}`);
+
+        this.setState({
+            loading: false,
+            pokemon: data.body.results,
+        });
+    }
+
+    fetchPokemonType = async() => {
+        const dataTypes = await request.get(`https://pokedex-alchemy.herokuapp.com/api/pokedex/types?`);
+        let el = [];
+            
+        dataTypes.body.map(type => {
+            if (!el.includes(type.type)) el.push(type.type);
+        });
+
+        this.setState({
+            dataTypes: el,
+        })
+   
+        
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.fetchPokemon()
+        
+    }
+    handleRadioChange = async (e) => {
+        await this.fetchPokemon();
+        this.setState({ radio: e.target.value })
+    } 
+
+    handleSearch = async (e) => {
+        e.preventDefault();
+        await this.setState({
+            search: e.target.value
+        }) ;
+    }
+  
+    handleSortBy = async (e) => {
+        await this.fetchPokemon()
+        this.setState({ sortBy: e.target.value })
+    }
+   
+    handleSortOrder = async (e) => {
+        await this.fetchPokemon()
+        this.setState({ sortOrder: e.target.value })
+        console.log(this.state.sortOrder)
+    }
     
     render() {
 
-
-        console.log(this.state)
-
-        const sortByType = typeof this.state.pokemon[0][this.state.sortBy];
-       
-        if(this.state.sortOrder === 'ascend') {
-            if (sortByType === 'string') 
-            this.state.pokemon.sort((a, b) => a[this.state.sortBy].localeCompare(b[this.state.sortBy]));
-            if(sortByType === 'number') 
-            this.state.pokemon.sort((a, b) => a[this.state.sortBy] - b[this.state.sortBy]);
-        }
-        else {
-            if (sortByType === 'string') 
-            this.state.pokemon.sort((a, b) => b[this.state.sortBy].localeCompare(a[this.state.sortBy]));
-            if(sortByType === 'number') 
-            this.state.pokemon.sort((a, b) => b[this.state.sortBy] - a[this.state.sortBy]);
-        }
-        
-       
-        const filteredByType = this.state.radio
-            ? this.state.pokemon.filter(pokemonObj => pokemonObj.type_1 === (this.state.radio))
-            : this.state.pokemon;
-        
-        const searchedPokemon = filteredByType.filter(pokemonObj => pokemonObj.pokemon.includes(this.state.search));
-        
-       
-             
         return (
             <div className = "mainDiv">
                 <section className ={style.sideBar}>
-                    <Perams handleSortBy = {this.handleSortBy} handleSortOrder = {this.handleSortOrder}/>
-                    <SearchBar handleSearch = {this.handleSearch} sortBy = {this.state.sortBy}/>
-                    <SearchCategory handleRadioChange = {this.handleRadioChange} pokemon = {uniqueType}
-                        onChange={this.handleRadioChange}
-                        
+                    <Perams
+                        handleSortBy={this.handleSortBy}
+                        handleSortOrder={this.handleSortOrder} />
+                    <SearchBar
+                        handleSearch={this.handleSubmit}
+                        onChange={this.handleSearch} />
+                    <SearchCategory
+                        handleRadioChange={this.handleRadioChange}
+
+                        pokemon={this.state.dataTypes}
+
+                        onChange={this.handleRadioChange}  
                     />
                     
                 </section>
-                <PokeList pokeArray = {searchedPokemon} />
+                {this.state.loading ? <Spinner /> :
+                    <PokeList pokeArray={this.state.pokemon} />}
             </div>
             
         )
