@@ -12,3 +12,30 @@
     border-right: 1px solid black;
    
 }
+
+.nextButton {
+    display: none;
+}
+
+.prevButton {
+    display: none;
+    
+}
+
+.prevNextButtonDiv {
+    display: flex;
+    justify-content: space-around;
+
+}
+
+label {
+    cursor: pointer;
+}
+
+label:active {
+    color:white;
+}
+
+.perPageSelect {
+    ;
+}
