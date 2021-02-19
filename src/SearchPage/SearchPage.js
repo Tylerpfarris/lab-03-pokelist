@@ -22,6 +22,9 @@ export default class SearchPage extends Component {
         radio: '',
         loading: false,
         dataTypes: [],
+        perPage: 25,
+        currentPage: 1,
+        totalPokemon: 0,
     }
     
     componentDidMount = async () => {
@@ -33,13 +36,14 @@ export default class SearchPage extends Component {
    
     fetchPokemon = async () => {
       
-        this.setState({ loading: true });
+        await this.setState({ loading: true });
         
-        const data = await request.get(`https://pokedex-alchemy.herokuapp.com/api/pokedex?sort=${this.state.sortBy}&direction=${this.state.sortOrder}&pokemon=${this.state.search}&type_1=${this.state.radio}`);
+        const data = await request.get(`https://pokedex-alchemy.herokuapp.com/api/pokedex?sort=${this.state.sortBy}&direction=${this.state.sortOrder}&pokemon=${this.state.search}&type_1=${this.state.radio}&page=${this.state.currentPage}&perPage=${this.state.perPage}`);
 
-        this.setState({
+        await this.setState({
             loading: false,
             pokemon: data.body.results,
+            totalPokemon: data.body.count,
         });
     }
 
@@ -51,21 +55,25 @@ export default class SearchPage extends Component {
             if (!el.includes(type.type)) el.push(type.type);
         });
 
-        this.setState({
+        await this.setState({
             dataTypes: el,
         })
    
         
     }
 
-    handleSubmit = (e) => {
+    handleSubmit = async (e) => {
         e.preventDefault();
-        this.fetchPokemon()
+        await this.fetchPokemon()
+        await this.setState({ currentPage: 1})
         
     }
+
     handleRadioChange = async (e) => {
+        await this.setState({ radio: e.target.value })
+        await this.setState({ currentPage: 1 })
+        await this.setState({ search: '' })
         await this.fetchPokemon();
-        this.setState({ radio: e.target.value })
     } 
 
     handleSearch = async (e) => {
@@ -77,37 +85,72 @@ export default class SearchPage extends Component {
   
     handleSortBy = async (e) => {
         await this.fetchPokemon()
-        this.setState({ sortBy: e.target.value })
+        await this.setState({ sortBy: e.target.value })
     }
    
     handleSortOrder = async (e) => {
         await this.fetchPokemon()
-        this.setState({ sortOrder: e.target.value })
+        await this.setState({ sortOrder: e.target.value })
         console.log(this.state.sortOrder)
+    
+    }
+
+    handlePerPage = (e) => {
+       this.setState({ perPage: e.target.value })
+       
     }
     
-    render() {
+    handleNextClick = async () => {
+        await this.setState({
+            currentPage: this.state.currentPage + 1
+        });
+        await this.fetchPokemon()
+    }
 
+    handlePrevClick = async () => {
+        await this.setState({
+            currentPage: this.state.currentPage - 1
+        });
+        await this.fetchPokemon()
+    }
+
+    render() {
+        console.log(this.state.perPage)
+        const lastPage = Math.ceil(this.state.totalPokemon / this.state.perPage);
         return (
             <div className = "mainDiv">
                 <section className ={style.sideBar}>
                     <Perams
                         handleSortBy={this.handleSortBy}
                         handleSortOrder={this.handleSortOrder} />
+                    Pokemon Per Page: 
+                    <select className={style.perPageSelect} onChange={this.handlePerPage}>
+                        <option value={25}>25</option>
+                        <option value={50}>50</option>
+                        <option value={75}>75</option>
+                        <option value={100}>100</option>
+                        <option value={150}>150</option>
+                    </select>
+                    <div className={style.prevNextButtonDiv}><label>Previous<button className={style.prevButton} onClick={this.handlePrevClick} disabled={this.state.currentPage === 1}></button></label>
+                    <label>Next<button className={style.nextButton} onClick={this.handleNextClick} disabled={this.state.currentPage === lastPage}></button></label>
+                        
+                </div>
                     <SearchBar
                         handleSearch={this.handleSubmit}
                         onChange={this.handleSearch} />
                     <SearchCategory
                         handleRadioChange={this.handleRadioChange}
-
                         pokemon={this.state.dataTypes}
-
                         onChange={this.handleRadioChange}  
                     />
                     
                 </section>
-                {this.state.loading ? <Spinner /> :
-                    <PokeList pokeArray={this.state.pokemon} />}
+                
+                
+                
+                {this.state.loading
+                    ? <Spinner />
+                    : <PokeList pokeArray={this.state.pokemon} />}
             </div>
             
         )

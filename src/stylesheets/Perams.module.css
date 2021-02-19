@@ -1,7 +1,7 @@
 
 
 .peramsDiv {
-margin-top: 150px;
+margin-top: 130px;
 margin-left: 2px;
 margin-bottom: 1rem;
 
@@ -34,4 +34,8 @@ margin-left: 2px;
 
     background-color: black;
 
+}
+
+label {
+    cursor: auto;
 }

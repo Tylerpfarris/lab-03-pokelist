@@ -8,3 +8,12 @@
     padding-left: 4rem;
     float: right;
 }
+
+.pokeItemLink:link {
+    text-decoration: none;
+    color: black;
+}
+
+.pokeItemLink:visited {
+    color:grey;
+}
